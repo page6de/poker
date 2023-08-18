@@ -74,7 +74,7 @@ onMounted(() => {
   if (!userName) {
     router.push('/');
   } else {
-    socket = io('ws://localhost:3000');
+    socket = io(process.env.VUE_APP_WS_SERVER_URL);
     socket.on('enterRoom', (msg) => { console.log('EnterRoom: ', msg) })
     socket.on('vote', (msg) => { 
       console.log('vote: ', msg)
