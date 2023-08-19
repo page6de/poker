@@ -7,7 +7,7 @@ interface UseRoomInterface {
   getRoom: () => string
 }
 
-const API_URL = process.env.VUE_APP_SERVER_URL
+const API_URL = process.env.VUE_APP_SERVER_URL;
 const currentRoomId: Ref<string> = ref('');
 
 export function useRoom(): UseRoomInterface {

@@ -29,7 +29,7 @@
         >{{ c }}</a>
       </div>
       <div class="room-url">
-         <img src="/img/icons/link.svg" height="15" class="header-icon link-icon"/> http://localhost:8080/room/{{ getRoom() }} 
+         <img src="/img/icons/link.svg" height="15" class="header-icon link-icon"/> {{ roomUrl }} 
       </div>
     </div>
     <!--<a href="#" @click.prevent="addUser">Add User</a> | 
@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Socket, io } from "socket.io-client";
 import type { User, UserPosiotion} from '@/types/User.type'
 import DefaultLayout from "../layouts/DefaultLayout.vue";
@@ -169,6 +169,9 @@ const doVote = (vote:string) => {
   socket.emit('vote', myVote.value);
 }
 
+const roomUrl = computed(() => {
+  return `${process.env.VUE_APP_SERVER_URL}/room/${getRoom()}` 
+})
 
 
 // --- Fake Users ---
