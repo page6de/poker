@@ -11,16 +11,13 @@
     <div id="room">
         
       <GameTable>
-        <button v-if="!showCards" @click="onToggleShowCards">Toggle Cards</button>
+        <button v-if="!showCards" @click="onToggleShowCards">Reveal Cards</button>
         <VoteResults v-if="showCards" :users="users"/>
-        <button v-if="showCards" @click="resetVotes">Reset Votes</button>
+        <button v-if="showCards" @click="resetVotes">Next Round</button>
       </GameTable>
       
       <div class="players" ref="playersCont">
         <PlayerOnTable v-for="(user, i) in users" :key="user.id" :user="user" :position="calcPosForUser(i)" :show-result="showCards" />
-      </div>
-      <div v-if="showCards" class="vote-results">
-        
       </div>
       <div class="vote-buttons">
         <a href="#" v-for="(c, i) in cards" :key="i" 
@@ -95,7 +92,7 @@ onMounted(() => {
 });
 
 const route = useRoute();
-const { setRoom, getRoom } = useRoom();
+const { setRoom, getRoom, getRoomUrl } = useRoom();
 
 onBeforeUnmount(() => {
   if(socket) socket.close();

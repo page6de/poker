@@ -4,7 +4,8 @@ import axios from "axios";
 interface UseRoomInterface {
   generateRoomId: () => Promise<string>
   setRoom: (roomId:string) => void
-  getRoom: () => string
+  getRoom: () => string,
+  getRoomUrl: () => string,
 }
 
 const API_URL = process.env.VUE_APP_SERVER_URL;
@@ -31,9 +32,14 @@ export function useRoom(): UseRoomInterface {
     return currentRoomId.value;
   }
 
+  const getRoomUrl = (): string => {
+    return `${process.env.VUE_APP_SERVER_URL}/room/${currentRoomId.value}`;
+  } 
+
   return {
     generateRoomId,
     getRoom,
-    setRoom
+    setRoom,
+    getRoomUrl,
   }
 }

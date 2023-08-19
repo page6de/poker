@@ -92,7 +92,7 @@ const avgResult = computed(() => {
     .bar {
       position: relative;
       width: 30px;
-      height: 100px;
+      height: 80px;
       background-color: #ccc;;
 
       .perc {

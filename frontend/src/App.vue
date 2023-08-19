@@ -50,9 +50,9 @@ input {
 }
 button {
   font-size: 1.4rem;
-  padding: .6rem 1.2rem;
+  padding: .6rem 1.6rem;
   border-radius: .8rem;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--border-color);
   margin: .4rem;
   cursor: pointer;
   transition: all .2s;
@@ -60,9 +60,11 @@ button {
   box-shadow: 2px 2px 4px rgba(0,0,0,.2);
 
   &:hover {
-    background-color: var(--primary-color);
-    border-color: #fff;//var(--primary-color);
+    background-color: #333;
+    //border-color: #fff;//var(--primary-color);
     color: #fff;
+  }
+  &:active {
     box-shadow: 0px 0px 0px rgba(0,0,0,.2);
     transform: translateY(2px);
   }

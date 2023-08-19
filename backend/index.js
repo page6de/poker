@@ -21,9 +21,16 @@ app.get('/room/:roomId', (req, res) => {
 });
 
 app.get('/createRoom', (req, res) => {
-  const sockets = io.of('/').adapter.rooms;
+  let roomId = generateRoomId(7);
+  const rooms = getRooms(); //io.of('/').adapter.rooms;
+  
+  let retries = 0;
+  while(!rooms.includes(roomId) && retries < 5) {
+    roomId = generateRoomId(7);
+    retries++;
+  }
   res.send({
-    roomId: '123456abc'
+    roomId
   })
 });
 
@@ -116,3 +123,25 @@ function updateUserForRoom(roomId) {
   const roomUser = getUserInRoom(roomId);
   io.to(roomId).emit('updateUser', { users: roomUser });
 } 
+
+function getRooms() {
+  let rooms = [];
+  for(let uid in users){
+    const u = users[uid];
+    if(u.room && !rooms.includes(u.room)) rooms.push(u.room);
+  }
+  return rooms;
+}
+
+// Utils
+function generateRoomId(length) {
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let randomString = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+}

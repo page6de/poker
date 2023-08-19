@@ -7,13 +7,13 @@
       
       <label for="i-username">Username:</label>
       <input v-model="username" id="i-username"><br>
-
-      <label for="i-roomid">RoomId:</label>
-      <input v-model="roomId" id="i-roomid"><br>
+    </p>
+    <p v-if="getRoom() !== ''" style="margin-bottom: 2rem">
+      <label>Current Room:</label> <b style="margin-bottom: .6rem; display: inline-block;">{{ getRoomUrl() }}</b><br>
+      <button @click="enterRoom">Enter Room</button>
     </p>
     <p>
-      <button @click="enterRoom">Enter Room</button>
-      <button @click="createNewRoom">Create Room</button>
+      <button @click="createNewRoom">Create New Room</button>
     </p>
 
   </DefaultLayout>
@@ -38,16 +38,18 @@ onMounted(() => {
 
 // Room Controls
 const roomId = ref(''); 
-const { generateRoomId } = useRoom();
+const { generateRoomId, getRoomUrl } = useRoom();
  
 const createNewRoom = async () => {
   const newRoomId = await generateRoomId();
   if (newRoomId) {
     roomId.value = newRoomId;
+    enterRoom();
   }
 };
 
 const enterRoom = () => {
+  if(username.value === '') return
   setUser(username.value);
   router.push({name:'room', params: {roomId: roomId.value}});
 } 
