@@ -3,7 +3,8 @@ node_modules
 /frontend/dist
 
 /frontend/tests/e2e/videos/
-/frontend//tests/e2e/screenshots/
+/frontend/tests/e2e/screenshots/
+/backend/public/
 
 
 # local env files

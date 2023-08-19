@@ -16,8 +16,8 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
+app.get('/room/:roomId', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.get('/createRoom', (req, res) => {
