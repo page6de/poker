@@ -4,7 +4,7 @@ module.exports = defineConfig({
   outputDir: '../backend/public',
   pages: {
     index: {
-      entry: 'src/main.js',
+      entry: 'src/main.ts',
       title: 'Scrum Poker',
     },
   }
