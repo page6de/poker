@@ -52,10 +52,8 @@ const cumulatedResults = computed(() => {
     }
   });
   for( let v of voteValues.sort()) {
-    console.log(v)
     res.push(votesByValue[v]);
   }
-  console.log(res)
   return res;
 });
 

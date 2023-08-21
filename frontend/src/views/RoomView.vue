@@ -36,8 +36,6 @@
         </div>
       </div>
     </div>
-    <!--<a href="#" @click.prevent="addUser">Add User</a> | 
-    <a href="#" @click.prevent="remUser">remove User</a>-->
   </DefaultLayout>
 </template>
 
@@ -79,9 +77,8 @@ onMounted(() => {
     router.push('/');
   } else {
     socket = io(process.env.VUE_APP_WS_SERVER_URL);
-    socket.on('enterRoom', (msg) => { console.log('EnterRoom: ', msg) })
+    //socket.on('enterRoom', (msg) => { console.log('EnterRoom: ', msg) })
     socket.on('vote', (msg) => { 
-      console.log('vote: ', msg)
       let user = users.value.find((u:User) => u.id === msg.id);
       if (user) user.vote = msg.vote ;
     })
@@ -91,7 +88,6 @@ onMounted(() => {
       users.value = payload.users;
       myVote.value = '';
       showCards.value = false;
-      console.log(users.value);
     });
 
     socket.emit('enterRoom', {name: getCurrentUser(),  room: getRoom()})
@@ -192,25 +188,6 @@ const copyRoomUrl = () => {
   }
 }
 
-// --- Fake Users ---
-/*
-const usernames = ['Tim', 'Andrei', 'Ahmad', 'Anjali', 'Harini', 'Lex', 
-'Eugene', 'Yevgheni', 'Alex', 'Steff', 'Christoph', 'Erik', 'Simone', 
-'Darya', 'Bianca', 'Maxime'];
-
-const addUser = () => {
-  console.log('-- Add User ----');
-  users.value.push({
-    id: users.value.length,
-    vote: cards[Math.round(Math.random() * cards.length - 1)],
-    name: usernames[Math.round(Math.random() * usernames.length-1)]
-  })
-} 
-
-const remUser = () => {
-  users.value.pop();
-} 
-*/
 </script>
 
 <style lang="scss">
