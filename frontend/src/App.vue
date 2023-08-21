@@ -5,7 +5,7 @@
 <style lang="scss">
 
 :root {
-  --primary-color: #9A88DB;
+  --primary-color: #5A9CFF;//#9A88DB;
   --secondary-color: #423966;
   --border-color: #747475;
   --main-bg: #FFFFFF;

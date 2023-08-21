@@ -33,7 +33,7 @@ export function useRoom(): UseRoomInterface {
   }
 
   const getRoomUrl = (): string => {
-    return `${process.env.VUE_APP_SERVER_URL}/room/${currentRoomId.value}`;
+    return `${process.env.VUE_APP_FRONTEND_URL}/room/${currentRoomId.value}`;
   } 
 
   return {

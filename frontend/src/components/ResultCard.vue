@@ -57,16 +57,14 @@ defineProps({
     border: 2px solid #999;
   }
   .back {
-    background-color: #999;
+    background-color: #F2F2F2;
     color: #EEE;
-
-
   }
   &.voted .back {
     background-color: #333;
   }
   .front {
-    background-color: #ccc;
+    background-color: #F2F2F2;
     transform: rotateY( 180deg );
   }
 

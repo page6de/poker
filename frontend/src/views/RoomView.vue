@@ -25,8 +25,15 @@
           :class="{voted: myVote === c}"
         >{{ c }}</a>
       </div>
-      <div class="room-url">
-         <img src="/img/icons/link.svg" height="15" class="header-icon link-icon"/> {{ roomUrl }} 
+      <div class="room-url" @click="copyRoomUrl">
+        <div v-show="wasCopied">
+          <img src="/img/icons/check.svg" height="20" class="header-icon check-icon"/>
+          Room URL copied to clipboard! 
+        </div>
+        <div v-show="!wasCopied">
+          <img src="/img/icons/link.svg" height="20" class="header-icon link-icon"/> 
+          {{ getRoomUrl() }} 
+        </div>
       </div>
     </div>
     <!--<a href="#" @click.prevent="addUser">Add User</a> | 
@@ -35,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Socket, io } from "socket.io-client";
 import type { User, UserPosiotion} from '@/types/User.type'
 import DefaultLayout from "../layouts/DefaultLayout.vue";
@@ -89,6 +96,10 @@ onMounted(() => {
 
     socket.emit('enterRoom', {name: getCurrentUser(),  room: getRoom()})
   } 
+});
+
+onBeforeUnmount(() => {
+  socket.disconnect();
 });
 
 const route = useRoute();
@@ -166,10 +177,20 @@ const doVote = (vote:string) => {
   socket.emit('vote', myVote.value);
 }
 
-const roomUrl = computed(() => {
-  return `${process.env.VUE_APP_SERVER_URL}/room/${getRoom()}` 
-})
-
+const wasCopied = ref(false);
+let wasCopiedTo: number;
+const copyRoomUrl = () => {
+  try {
+    navigator.clipboard.writeText(getRoomUrl());
+    wasCopied.value = true;
+    if (wasCopiedTo) clearTimeout(wasCopiedTo);
+    wasCopiedTo = setTimeout(() => {
+      wasCopied.value = false
+    }, 3000);
+  } catch (e) {
+    console.error('Could not copy to clipboard.')
+  }
+}
 
 // --- Fake Users ---
 /*
@@ -254,6 +275,15 @@ const remUser = () => {
   vertical-align: middle;
   margin-right: .5rem;
   margin-bottom: 3px;
+}
+
+.room-url > div {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  fill: #0ea70e;
 }
 
 </style>
