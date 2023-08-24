@@ -15,13 +15,15 @@
     <p>
       <button @click="createNewRoom">Create New Room</button>
     </p>
-
+    <BetaBandarole/>
   </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import router from '@/router';
 import DefaultLayout from "../layouts/DefaultLayout.vue";
+import BetaBandarole from "@/components/BetaBandarole.vue";
+
 import { useUser } from "../composables/useUser";
 import { useRoom } from "../composables/useRoom";
 import { onMounted, ref } from 'vue';

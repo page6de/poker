@@ -36,6 +36,7 @@
         </div>
       </div>
     </div>
+    <BetaBandarole/>
   </DefaultLayout>
 </template>
 
@@ -47,6 +48,8 @@ import DefaultLayout from "../layouts/DefaultLayout.vue";
 import GameTable from "../components/GameTable.vue";
 import VoteResults from "@/components/VoteResults.vue"
 import PlayerOnTable from "../components/PlayerOnTable.vue";
+import BetaBandarole from "@/components/BetaBandarole.vue";
+
 import { useUser } from "@/composables/useUser"
 import { useRoom } from "@/composables/useRoom"
 import { DefaultEventsMap } from '@socket.io/component-emitter';
