@@ -95,7 +95,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  socket.disconnect();
+  socket?.disconnect();
 });
 
 const route = useRoute();
