@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="avg">
-      {{ avgResult }}
+      {{ medianResult }}
       <img src="/img/icons/average.svg" />
     </div>
   </div>
@@ -51,27 +51,31 @@ const cumulatedResults = computed(() => {
       }
     }
   });
-  for( let v of voteValues.sort()) {
+  voteValues.sort((a, b) => isNaN(parseInt(a)) ? -1 : parseInt(a) - parseInt(b)); 
+  for( let v of voteValues) {
     res.push(votesByValue[v]);
   }
   return res;
 });
 
-const avgResult = computed(() => {
-  let sum = 0;
-  let votes = 0;
+const medianResult = computed(() => {
+  let votes:number[] = [];
   props.users.forEach((user) => {
     if (user.vote) {
       let int = parseInt(user.vote);
-      if(!isNaN(int)) {
-        votes++;
-        sum += int;
+      if (!isNaN(int)) {
+        votes.push(int);
       }
     }
-  })
-  const avg = (sum / votes);
-  return isNaN(avg) ? '' : avg.toFixed(1);
-})
+  });
+  if (votes.length === 0) return "";
+  votes.sort((a,b) => a-b);
+  const mid = Math.floor(votes.length / 2);
+  const median = (votes.length % 2) 
+    ? votes[mid] 
+    : ( (votes[mid-1] + votes[mid]) / 2 );
+  return  median.toString();
+});
 
 </script>
 
