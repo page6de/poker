@@ -5,7 +5,15 @@
     </template>
     <template v-slot:header-right>
       <div style="padding-top: 14px; padding-right: 1rem;">
-        <img src="/img/icons/user-circle.svg" height="30" class="header-icon user-icon"/><b>{{ getCurrentUser() }}</b>
+        <RouterLink v-if="guestMode" :to="'/room/' + getRoom()" title="Guest Mode (Observer)">
+          <img src="/img/icons/drone.svg" height="30" class="header-icon user-icon"/>
+        </RouterLink>
+        <RouterLink v-if="!guestMode" :to="'/guest/' + getRoom()" title="Guest Mode (Observer)">
+          <img src="/img/icons/drone.svg" height="30" class="header-icon user-icon"/>
+        </RouterLink>
+        <RouterLink v-if="!guestMode" to="/">
+          <img src="/img/icons/user-circle.svg" height="30" class="header-icon user-icon"/><b>{{ getCurrentUser() }}</b>
+        </RouterLink>
       </div>
     </template>
     <div id="room">
@@ -19,7 +27,7 @@
       <div class="players" ref="playersCont">
         <PlayerOnTable v-for="(user, i) in users" :key="user.id" :user="user" :position="calcPosForUser(i)" :show-result="showCards" />
       </div>
-      <div class="vote-buttons">
+      <div v-if="guestMode===false" class="vote-buttons">
         <a href="#" v-for="(c, i) in cards" :key="i" 
           @click.prevent="doVote(c)"
           :class="{voted: myVote === c}"
@@ -28,7 +36,7 @@
       <div class="room-url" @click="copyRoomUrl">
         <div v-show="wasCopied">
           <img src="/img/icons/check.svg" height="20" class="header-icon check-icon"/>
-          Room URL copied to clipboard! 
+          Room URL copied to clipboard!
         </div>
         <div v-show="!wasCopied">
           <img src="/img/icons/link.svg" height="20" class="header-icon link-icon"/> 
@@ -41,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeMount, onBeforeUnmount, onMounted, onUpdated, ref } from 'vue';
 import { Socket, io } from "socket.io-client";
 import type { User, UserPosiotion} from '@/types/User.type'
 import DefaultLayout from "../layouts/DefaultLayout.vue";
@@ -59,6 +67,7 @@ import { useRoute } from 'vue-router';
 const { getCurrentUser } = useUser();
 
 let socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+let guestMode = ref(false);
 
 onBeforeMount(() => {
   if (!route.params.roomId) {
@@ -71,6 +80,12 @@ onBeforeMount(() => {
   }
   if (getCurrentUser() == '') {
     router.push('/');
+  }
+})
+
+onUpdated(() => {
+  if (route.path.indexOf('guest') > -1) {
+    guestMode.value = true;
   }
 })
 
@@ -93,7 +108,8 @@ onMounted(() => {
       showCards.value = false;
     });
 
-    socket.emit('enterRoom', {name: getCurrentUser(),  room: getRoom()})
+    if (!guestMode.value) socket.emit('enterRoom', {name: getCurrentUser(),  room: getRoom()})
+    if (guestMode.value) socket.emit('enterRoomAsGuest', {room: getRoom()})
   } 
 });
 

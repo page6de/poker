@@ -33,6 +33,10 @@ nav {
   }
 }
 
+a:visited, a > * {
+  color: var(--text-color);
+  text-decoration: none;
+}
 
 label {
   font-size: 1.4rem;

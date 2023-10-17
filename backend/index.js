@@ -20,6 +20,10 @@ app.get('/room/:roomId', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get('/guest/:roomId/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 app.get('/createRoom', (req, res) => {
   let roomId = generateRoomId(7);
   const rooms = getRooms(); //io.of('/').adapter.rooms;
@@ -54,6 +58,11 @@ io.on('connection', (socket) => {
     socket.join(msg.room)
     users[socket.id] = user;
     updateUserForRoom(user.room);
+  });
+
+  socket.on('enterRoomAsGuest', (msg) => {
+    socket.join(msg.room)
+    updateUserForRoom(msg.room);
   });
 
   socket.on('vote', (msg) => {
