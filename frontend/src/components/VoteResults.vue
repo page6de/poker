@@ -28,8 +28,8 @@ type CumulatedResult = {
 
 const props = defineProps({
   users: {
-    type: [] as PropType <User[]>,
-    default: []
+    type: Array as PropType<Array<User>>,
+    default: () => []
   }
 });
 
@@ -51,15 +51,26 @@ const cumulatedResults = computed(() => {
       }
     }
   });
-  voteValues.sort((a, b) => isNaN(parseInt(a)) ? -1 : parseInt(a) - parseInt(b)); 
-  for( let v of voteValues) {
+  for( let v of voteValues.sort(sortResults)) {
     res.push(votesByValue[v]);
   }
   return res;
 });
 
+const sortResults = (a:string, b:string) => {
+  return voteToInt(a) - voteToInt(b);
+}
+
+const voteToInt = (vote:string) => {
+  if (vote === '?') return -1;
+  if (vote === '☕️') return -2;
+  const int = parseInt(vote)
+  if (isNaN(int)) return -1000;
+  return int
+}
+
 const medianResult = computed(() => {
-  let votes:number[] = [];
+  let votes: number[] = [];
   props.users.forEach((user) => {
     if (user.vote) {
       let int = parseInt(user.vote);
@@ -69,12 +80,12 @@ const medianResult = computed(() => {
     }
   });
   if (votes.length === 0) return "";
-  votes.sort((a,b) => a-b);
+  votes.sort((a, b) => a - b);
   const mid = Math.floor(votes.length / 2);
-  const median = (votes.length % 2) 
-    ? votes[mid] 
-    : ( (votes[mid-1] + votes[mid]) / 2 );
-  return  median.toString();
+  const median = (votes.length % 2)
+    ? votes[mid]
+    : ((votes[mid - 1] + votes[mid]) / 2);
+  return median.toString();
 });
 
 </script>
