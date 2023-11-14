@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
   }
 });
 
-const cards = ["?", "☕️", "1", "2", "3", "5", "8", "13", "21"]
+const cards = ["?", "☕️", "1", "2", "3", "5", "8", "13", "16", "21"]
 
 const showCards = ref(false);
 const myVote = ref('');
