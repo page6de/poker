@@ -6,10 +6,10 @@
     <template v-slot:header-right>
       <div style="padding-top: 14px; padding-right: 1rem;">
         <RouterLink v-if="guestMode" :to="'/room/' + getRoom()" title="Guest Mode (Observer)">
-          <img src="/img/icons/drone.svg" height="30" class="header-icon user-icon"/>
+          <img src="/img/icons/incognito.svg" height="30" class="header-icon user-icon"/>
         </RouterLink>
         <RouterLink v-if="!guestMode" :to="'/guest/' + getRoom()" title="Guest Mode (Observer)">
-          <img src="/img/icons/drone.svg" height="30" class="header-icon user-icon"/>
+          <img src="/img/icons/incognito.svg" height="30" class="header-icon user-icon"/>
         </RouterLink>
         <RouterLink v-if="!guestMode" to="/">
           <img src="/img/icons/user-circle.svg" height="30" class="header-icon user-icon"/><b>{{ getCurrentUser() }}</b>
@@ -86,7 +86,10 @@ onBeforeMount(() => {
 onUpdated(() => {
   if (route.path.indexOf('guest') > -1) {
     guestMode.value = true;
+  } else {
+    guestMode.value = false;
   }
+  console.log('Updated!')
 })
 
 onMounted(() => {
