@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import type { User, UserPosiotion } from '@/types/User.type'
-import { PropType, computed } from 'vue';
+import { type PropType, computed } from 'vue';
 import ResultCard from "@/components/ResultCard.vue"
 
 const props = defineProps({

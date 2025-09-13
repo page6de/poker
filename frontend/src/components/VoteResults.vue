@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, computed } from "vue";
+import { type PropType, computed } from "vue";
 import type { User } from "@/types/User.type";
 
 type CumulatedResult = {
@@ -93,7 +93,7 @@ const medianResult = computed(() => {
 <style lang="scss">
 
 #results {
- 
+
   display: flex;
   gap: 20px;
   justify-content: center;
@@ -138,7 +138,7 @@ const medianResult = computed(() => {
     img  {
       height: 34px;
       fill: var(--text-color);
-      
+
     }
    }
 }
