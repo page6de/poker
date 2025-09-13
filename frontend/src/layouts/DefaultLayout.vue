@@ -2,13 +2,13 @@
   <div id="default-layout">
     <div class="header">
       <div class="left">
-        <slot name="header-left" />
+        <slot name="header-left"></slot>
       </div>
       <div class="right">
-          <slot name="header-right" />
+          <slot name="header-right"></slot>
         </div>
     </div>
-    <slot/>
+    <slot></slot>
   </div>
 </template>
 

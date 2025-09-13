@@ -1,4 +1,4 @@
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 import axios from "axios";
 
 interface UseRoomInterface {
@@ -8,8 +8,9 @@ interface UseRoomInterface {
   getRoomUrl: () => string,
 }
 
-const API_URL = process.env.VUE_APP_SERVER_URL;
-const currentRoomId: Ref<string> = ref('');
+console.log('ENV_:', import.meta.env)
+const API_URL = import.meta.env.VITE_APP_SERVER_URL;
+const currentRoomId = ref('');
 
 export function useRoom(): UseRoomInterface {
 
@@ -19,7 +20,7 @@ export function useRoom(): UseRoomInterface {
       const res = await axios.get(`${API_URL}/createRoom`);
       roomId = res.data?.roomId || 'no luck';
     } catch (e) {
-      console.error('Room Request Failed')
+      console.error('Room Request Failed', e)
     }
     return roomId;
   }
@@ -33,8 +34,8 @@ export function useRoom(): UseRoomInterface {
   }
 
   const getRoomUrl = (): string => {
-    return `${process.env.VUE_APP_FRONTEND_URL}/room/${currentRoomId.value}`;
-  } 
+    return `${import.meta.env.VITE_APP_FRONTEND_URL}/room/${currentRoomId.value}`;
+  }
 
   return {
     generateRoomId,

@@ -1,4 +1,4 @@
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 
 
 interface useUserInterface {
@@ -7,13 +7,13 @@ interface useUserInterface {
 }
 
 
-const currentUser: Ref<string> = ref('');
+const currentUser = ref('');
 
 export function useUser(): useUserInterface {
   const setUser = (username: string) => {
     localStorage.setItem('username', username);
     currentUser.value = username;
-  } 
+  }
 
   const getCurrentUser = ():string => {
     if (!currentUser.value) {

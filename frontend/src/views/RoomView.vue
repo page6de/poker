@@ -9,18 +9,18 @@
       </div>
     </template>
     <div id="room">
-        
+
       <GameTable>
         <button v-if="!showCards" @click="onToggleShowCards">Reveal Cards</button>
         <VoteResults v-if="showCards" :users="users"/>
         <button v-if="showCards" @click="resetVotes">Next Round</button>
       </GameTable>
-      
+
       <div class="players" ref="playersCont">
         <PlayerOnTable v-for="(user, i) in users" :key="user.id" :user="user" :position="calcPosForUser(i)" :show-result="showCards" />
       </div>
       <div class="vote-buttons">
-        <a href="#" v-for="(c, i) in cards" :key="i" 
+        <a href="#" v-for="(c, i) in cards" :key="i"
           @click.prevent="doVote(c)"
           :class="{voted: myVote === c}"
         >{{ c }}</a>
@@ -28,11 +28,11 @@
       <div class="room-url" @click="copyRoomUrl">
         <div v-show="wasCopied">
           <img src="/img/icons/check.svg" height="20" class="header-icon check-icon"/>
-          Room URL copied to clipboard! 
+          Room URL copied to clipboard!
         </div>
         <div v-show="!wasCopied">
-          <img src="/img/icons/link.svg" height="20" class="header-icon link-icon"/> 
-          {{ getRoomUrl() }} 
+          <img src="/img/icons/link.svg" height="20" class="header-icon link-icon"/>
+          {{ getRoomUrl() }}
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@ import BetaBandarole from "@/components/BetaBandarole.vue";
 
 import { useUser } from "@/composables/useUser"
 import { useRoom } from "@/composables/useRoom"
-import { DefaultEventsMap } from '@socket.io/component-emitter';
+import type { DefaultEventsMap } from '@socket.io/component-emitter';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 
@@ -79,10 +79,10 @@ onMounted(() => {
   if (!userName) {
     router.push('/');
   } else {
-    socket = io(process.env.VUE_APP_WS_SERVER_URL);
+    socket = io(import.meta.env.VITE_APP_WS_SERVER_URL);
     //socket.on('enterRoom', (msg) => { console.log('EnterRoom: ', msg) })
-    socket.on('vote', (msg) => { 
-      let user = users.value.find((u:User) => u.id === msg.id);
+    socket.on('vote', (msg) => {
+      const user = users.value.find((u:User) => u.id === msg.id);
       if (user) user.vote = msg.vote ;
     })
     socket.on('updateUser', (payload) => users.value = payload.users)
@@ -94,7 +94,7 @@ onMounted(() => {
     });
 
     socket.emit('enterRoom', {name: getCurrentUser(),  room: getRoom()})
-  } 
+  }
 });
 
 onBeforeUnmount(() => {
@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
   }
 });
 
-const cards = ["?", "☕️", "1", "2", "3", "5", "8", "13", "16", "21"]
+const cards = ["?", "☕️", "1", "2", "3", "5", "8", "13", "21"]
 
 const showCards = ref(false);
 const myVote = ref('');
@@ -172,7 +172,7 @@ const doVote = (vote:string) => {
   } else {
     myVote.value = vote;
   }
-  
+
   socket.emit('vote', myVote.value);
 }
 
@@ -187,7 +187,7 @@ const copyRoomUrl = () => {
       wasCopied.value = false
     }, 3000);
   } catch (e) {
-    console.error('Could not copy to clipboard.')
+    console.error('Could not copy to clipboard.', e)
   }
 }
 
@@ -237,7 +237,7 @@ const copyRoomUrl = () => {
       text-decoration: none;
       border: 2px solid var(--border-color);
       color: #222;
-    
+
       &:hover {
         transform: translateY(-10px);
       }

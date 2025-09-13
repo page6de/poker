@@ -51,7 +51,7 @@ const cumulatedResults = computed(() => {
       }
     }
   });
-  for( let v of voteValues.sort(sortResults)) {
+  for( const v of voteValues.sort(sortResults)) {
     res.push(votesByValue[v]);
   }
   return res;
@@ -70,10 +70,10 @@ const voteToInt = (vote:string) => {
 }
 
 const medianResult = computed(() => {
-  let votes: number[] = [];
+  const votes: number[] = [];
   props.users.forEach((user) => {
     if (user.vote) {
-      let int = parseInt(user.vote);
+      const int = parseInt(user.vote);
       if (!isNaN(int)) {
         votes.push(int);
       }
